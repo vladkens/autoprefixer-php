@@ -27,6 +27,10 @@ a {
 
 You can ask me any questions by e-mail: <vladkens@yandex.ru>
 
+## Install
+
+- First you need install [Node.js](http://nodejs.org/) in your server.
+
 ### Install via Composer.
 
 - Create a composer.json file in your project root:
@@ -51,7 +55,7 @@ You can ask me any questions by e-mail: <vladkens@yandex.ru>
     require_once 'vendor/autoload.php';
     ```
 
-### Usage
+## Usage
 
 ```php
 $autoprefixer = new Autoprefixer();
@@ -80,9 +84,9 @@ try {
 $autoprefixer->update();
 ```
 
-### Speed
+## Speed
 On my Intel i5-3210M 2.5GHz and HDD 5200 RPM GitHub styles compiled in 390 ms.
 
-### More docs
+## More docs
 
 See https://github.com/ai/autoprefixer/blob/master/README.md
