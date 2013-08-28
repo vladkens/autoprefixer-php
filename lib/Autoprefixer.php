@@ -3,6 +3,31 @@
 class Autoprefixer
 {
     /**
+     * @var array
+     */
+    private $browsers = array();
+    
+    /**
+     * @param   mixed   $browsers
+     */
+    public function __construct($browsers = null)
+    {
+        if (!is_null($browsers)) $this->setBrowsers($browsers);
+    }
+    
+    /**
+     * Set browsers info.
+     * @param   mixed   $browsers   String if one argument, array if many.
+     * @return  void
+     */
+    public function setBrowsers($browsers)
+    {
+        if (!is_array($browsers)) $browsers = array($browsers);
+        
+        $this->browsers = $browsers;
+    }
+
+    /**
      * @param   mixed   $css
      * @param   mixed   $browsers
      * @throw   AutoprefixerException
@@ -18,7 +43,9 @@ class Autoprefixer
             
         if ($nodejs) {
             $this->fwrite_stream($pipes[0],
-                json_encode(array('css' => $css, 'browsers' => $browsers)));
+                json_encode(array(
+                    'css' => $css,
+                    'browsers' => !is_null($browsers) ? $browsers : $this->browsers)));
             fclose($pipes[0]);
             
             $output = stream_get_contents($pipes[1]);

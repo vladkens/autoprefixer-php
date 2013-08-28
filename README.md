@@ -80,6 +80,17 @@ try {
     echo $error->getMessage();
 }
 
+/*
+// If you want to choose specific browsers
+$autoprefixer = new Autoprefixer('last 1 version'); // one rule
+// or 
+$autoprefixer = new Autoprefixer(array('ff > 2', '> 2%', 'ie8')); // many rules
+// or
+$autoprefixer->setBrowsers('last 1 version');
+// or change browsers on one iteration
+$autoprefixer->compile($css_one, 'last 1 version');
+*/
+
 // Also, you can get latest version Autoprefixer using
 $autoprefixer->update();
 ```
