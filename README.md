@@ -80,16 +80,14 @@ try {
     echo $error->getMessage();
 }
 
-/*
 // If you want to choose specific browsers
 $autoprefixer = new Autoprefixer('last 1 version'); // one rule
 // or 
 $autoprefixer = new Autoprefixer(array('ff > 2', '> 2%', 'ie8')); // many rules
 // or
 $autoprefixer->setBrowsers('last 1 version');
-// or change browsers on one iteration
+// or change browsers on a one iteration
 $autoprefixer->compile($css_one, 'last 1 version');
-*/
 
 // Also, you can get latest version Autoprefixer using
 $autoprefixer->update();
@@ -99,5 +97,4 @@ $autoprefixer->update();
 On my Intel i5-3210M 2.5GHz and HDD 5200 RPM GitHub styles compiled in 390 ms.
 
 ## More docs
-
 See https://github.com/ai/autoprefixer/blob/master/README.md
