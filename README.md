@@ -96,5 +96,8 @@ $autoprefixer->update();
 ## Speed
 On my Intel i5-3210M 2.5GHz and HDD 5200 RPM GitHub styles compiled in 390 ms.
 
+## License
+[MIT](https://raw.github.com/vladkens/autoprefixer-php/master/LICENSE)
+
 ## More docs
 See https://github.com/ai/autoprefixer/blob/master/README.md
