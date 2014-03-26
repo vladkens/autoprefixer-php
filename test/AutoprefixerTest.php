@@ -82,7 +82,8 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array('keyframes'),
-                array('safari 6', 'chrome 25', 'opera 12')),
+                array('chrome > 19', 'opera 12')
+            ),
             array(
                 array('border-radius'),
                 array('safari 4', 'ff 3.6')
@@ -96,31 +97,26 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
                 array('chrome 25', 'opera 12', 'android 2.3')
             ),
             array(
-                array('flexbox', 'flex-rewrite'),
-                array('safari 6',  'chrome 25', 'ff 21', 'ie 10')
+                array('flexbox', 'flex-rewrite', 'double', 'trim'),
+                array('chrome > 19', 'ff 21', 'ie 10')
             ),
             array(
                 array('selectors', 'placeholder'),
-                array('chrome 25', 'ff 22', 'ie 10')
+                array('chrome 25', 'ff > 17', 'ie 10')
             ),
             array(
-                array('intrinsic'),
+                array('intrinsic', 'multicolumn'),
                 array('chrome 25', 'ff 22')
             ),
             array(
-                array('old'),
-                array('none')
+                array('cascade'),
+                array('chrome > 19', 'ff 21', 'ie 10')
             ),
             array(
-                array('ie-transition'),
-                array('ie > 0')
+                array('ie-transform'),
+                array('ie > 9')
             )
         );
     }
     
 };
-
-/*$at = new AutoprefixerTest();
-echo '<pre>';
-print_r([[0,0],[1,1]]);
-print_r($at->tests);*/

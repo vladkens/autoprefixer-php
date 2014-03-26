@@ -3,11 +3,13 @@ a {
     flex-flow: row;
     order: 0;
     flex: 0 1 2;
+    transition: flex 200ms;
 }
 .inline {
     display: inline-flex;
     align-self: auto;
     align-content: stretch;
+    flex: auto;
 }
 
 .a {
@@ -17,6 +19,7 @@ a {
     flex-wrap: nowrap;
     align-content: flex-start;
     align-self: flex-start;
+    flex: none;
 }
 .b {
     flex-direction: row-reverse;
@@ -25,6 +28,7 @@ a {
     flex-wrap: wrap;
     align-content: flex-end;
     align-self: flex-end;
+    flex-shrink: 1;
 }
 .c {
     flex-direction: column;
@@ -33,6 +37,7 @@ a {
     flex-wrap: reverse-wrap;
     align-content: center;
     align-self: center;
+    flex-basis: auto;
 }
 .e {
     flex-direction: column-reverse;

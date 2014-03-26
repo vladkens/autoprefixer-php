@@ -54,14 +54,15 @@ class Autoprefixer
             fclose($pipes[0]);
             
             $output = stream_get_contents($pipes[1]);
-            $output = json_decode($output);
+            $output = json_decode($output, true);
             fclose($pipes[1]);
         }
         
         proc_close($nodejs);
         
         $error_messages = '';
-        foreach ($output as $key => $value) {
+        foreach ($output as $key => &$value) {
+            $value = $value['css'];
             if (preg_match('/^Error:\s*/i', $value)) {
                 $value = preg_replace('/^Error:\s*/i', '', $value);
                 $error_messages .= "In css[$key]: $value \n";
