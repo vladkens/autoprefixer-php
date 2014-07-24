@@ -18,15 +18,14 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
     {
         $this->settings = $this->getSettings();
         
-        $path = __DIR__ .DIRECTORY_SEPARATOR .'..' .DIRECTORY_SEPARATOR .'lib'.DIRECTORY_SEPARATOR;
-        if (file_exists($path.'Autoprefixer.php')&&file_exists($path.'AutoprefixerException.php')) {
+        $path = __DIR__ . DIRECTORY_SEPARATOR . '..' .DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR;
+        if (file_exists($path . 'Autoprefixer.php') && file_exists($path . 'AutoprefixerException.php')) {
             require_once $path . 'Autoprefixer.php';
             require_once $path . 'AutoprefixerException.php';
             $this->autoprefixer = new Autoprefixer();
-        } else
-            throw new Exception('Could not find Autoprefixer.php');
+        } else throw new Exception('Could not find Autoprefixer.php');
             
-        $this->scan(__DIR__);
+        $this->scan(__DIR__ . DIRECTORY_SEPARATOR . 'cases' . DIRECTORY_SEPARATOR);
         
         $result = array();
         foreach (static::$tests as $name => $value)
@@ -75,48 +74,55 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
     
     protected function getSettings()
     {
-        return array(
-            array(
+        return array_values(array(
+            'compiler' => array(
                 array('default'),
-                array('chrome 25', 'opera 12')
+                array('Chrome 25', 'Opera 12')
             ),
-            array(
-                array('keyframes'),
-                array('chrome > 19', 'opera 12')
-            ),
-            array(
-                array('border-radius'),
-                array('safari 4', 'ff 3.6')
-            ),
-            array(
+            'cleaner' => array(
                 array('vendor-hack', 'mistakes'),
                 array('none')
             ),
-            array(
-                array('gradient'),
-                array('chrome 25', 'opera 12', 'android 2.3')
+            'borderer' => array(
+                array('border-radius'),
+                array('Safari 4', 'Firefox 3.6')
             ),
-            array(
-                array('flexbox', 'flex-rewrite', 'double', 'trim'),
-                array('chrome > 19', 'ff 21', 'ie 10')
-            ),
-            array(
-                array('selectors', 'placeholder'),
-                array('chrome 25', 'ff > 17', 'ie 10')
-            ),
-            array(
-                array('intrinsic', 'multicolumn'),
-                array('chrome 25', 'ff 22')
-            ),
-            array(
+            'cascader' => array(
                 array('cascade'),
-                array('chrome > 19', 'ff 21', 'ie 10')
+                array('Chrome > 19', 'Firefox 21', 'IE 10')
             ),
-            array(
-                array('ie-transform'),
-                array('ie > 9')
+            'keyframer' => array(
+                array('keyframes'),
+                array('Chrome > 19', 'Opera 12')
+            ),
+            'flexboxer' => array(
+                array('flexbox', 'flex-rewrite', 'double'),
+                array('Chrome > 19', 'Firefox 21', 'IE 10')
+            ),
+            'without3d' => array(
+                array('3d-transform'),
+                array('Opera 12', 'Explorer > 0')
+            ),
+            'uncascader' => array(
+                array('uncascade'),
+                array('Firefox 15')
+            ),
+            'gradienter' => array(
+                array('gradient'),
+                array('Chrome 25', 'Opera 12', 'Android 2.3')
+            ),
+            'selectorer' => array(
+                array('selectors', 'placeholder'),
+                array('Chrome 25', 'Firefox > 17', 'Explorer 10')
+            ),
+            'intrinsicer' => array(
+                array('intrinsic', 'multicolumn'),
+                array('Chrome 25', 'Firefox 22')
+            ),
+            'backgrounder' => array(
+                array('background-size'),
+                array('Firefox 3.6', 'Android 2.3')
             )
-        );
+        ));
     }
-    
 };

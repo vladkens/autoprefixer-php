@@ -19,7 +19,15 @@ div {
 }
 
 .simple2 {
-    background: linear-gradient(to left, black 0%, rgba(0, 0, 0, 0.5) 50%, white 100%);
+    background: linear-gradient(to left, black 0%, rgba(0, 0, 0, 0.5)50%, white 100%);
+}
+
+.simple3 {
+    background: linear-gradient(to left, black 50%, white 100%);
+}
+
+.simple4 {
+    background: linear-gradient(to right top, black, white);
 }
 
 .direction {
@@ -28,4 +36,8 @@ div {
 
 .radial {
     background: radial-gradient(farthest-side at 0 50%, white, black);
+}
+
+.color {
+    background: red linear-gradient(red, blue);
 }

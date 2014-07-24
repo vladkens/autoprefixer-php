@@ -62,7 +62,6 @@ class Autoprefixer
         
         $error_messages = '';
         foreach ($output as $key => &$value) {
-            $value = $value['css'];
             if (preg_match('/^Error:\s*/i', $value)) {
                 $value = preg_replace('/^Error:\s*/i', '', $value);
                 $error_messages .= "In css[$key]: $value \n";
