@@ -1,4 +1,4 @@
-# Autoprefixer PHP
+# Autoprefixer PHP [![Build Status](https://travis-ci.org/vladkens/autoprefixer-php.svg?branch=master)](https://travis-ci.org/vladkens/autoprefixer-php)
 
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
 to parse CSS and add vendor prefixes to CSS rules using values
@@ -67,7 +67,7 @@ $prefixed = $autoprefixer->compile($css_one);
 echo $prefixed;
 
 // If need compile many css in one time. Function return array of compiled CSS.
-$prefixed = $autoprefixer->(array($css_one, $css_two));
+$prefixed = $autoprefixer->([$css_one, $css_two]);
 echo $prefixed[0] . "\n" . $prefixed[1];
 
 // If occurred error in compile time Autoprefixer throw exception named `AutoprefixerException`.
@@ -83,7 +83,7 @@ try {
 // If you want to choose specific browsers
 $autoprefixer = new Autoprefixer('last 1 version'); // one rule
 // or 
-$autoprefixer = new Autoprefixer(array('ff > 2', '> 2%', 'ie8')); // many rules
+$autoprefixer = new Autoprefixer(['ff > 2', '> 2%', 'ie 8']); // many rules
 // or
 $autoprefixer->setBrowsers('last 1 version');
 // or change browsers on a one iteration

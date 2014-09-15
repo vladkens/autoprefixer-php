@@ -17,7 +17,9 @@ class Autoprefixer
      */
     public function __construct($browsers = null)
     {
-        if (!is_null($browsers)) $this->setBrowsers($browsers);
+        if (!is_null($browsers)) {
+            $this->setBrowsers($browsers);
+        }
     }
     
     /**
@@ -27,8 +29,9 @@ class Autoprefixer
      */
     public function setBrowsers($browsers)
     {
-        if (!is_array($browsers)) $browsers = array($browsers);
-        
+        if (!is_array($browsers)) {
+            $browsers = array($browsers);
+        }
         $this->browsers = $browsers;
     }
 
@@ -40,17 +43,21 @@ class Autoprefixer
      */
     public function compile($css, $browsers = null)
     {
-        if ($return_string = !is_array($css)) $css = array($css);
+        if ($return_string = !is_array($css)) {
+            $css = array($css);
+        }
         
         $nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
             array(array('pipe', 'r'), array('pipe', 'w')),
-            $pipes);
+            $pipes
+        );
             
         if ($nodejs) {
             $this->fwrite_stream($pipes[0],
                 json_encode(array(
                     'css' => $css,
-                    'browsers' => !is_null($browsers) ? $browsers : $this->browsers)));
+                    'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
+                ));
             fclose($pipes[0]);
             
             $output = stream_get_contents($pipes[1]);
@@ -68,8 +75,9 @@ class Autoprefixer
             }
         }
         
-        if (strlen($error_messages) > 0)
+        if (strlen($error_messages) > 0) {
             throw new AutoprefixerException($error_messages);
+        }
         
         return $return_string ? $output[0] : $output;
     }

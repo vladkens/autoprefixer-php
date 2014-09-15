@@ -23,21 +23,24 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
             require_once $path . 'Autoprefixer.php';
             require_once $path . 'AutoprefixerException.php';
             $this->autoprefixer = new Autoprefixer();
-        } else throw new Exception('Could not find Autoprefixer.php');
-            
+        } else {
+            throw new Exception('Could not find Autoprefixer.php');
+        }
         $this->scan(__DIR__ . DIRECTORY_SEPARATOR . 'cases' . DIRECTORY_SEPARATOR);
         
         $result = array();
-        foreach (static::$tests as $name => $value)
+        foreach (static::$tests as $name => $value) {
             $result[] = array($name);
+        }
         return $result;
     }
     
     protected function scan($path)
     {
         foreach (scandir($path) as $name) {
-            if (is_dir($name) && $name != '.' && $name != '..')
+            if (is_dir($name) && $name != '.' && $name != '..') {
                 $this->scan($path . DIRECTORY_SEPARATOR . $name);
+            }
                 
             if (substr($name, -4) != '.css' || substr($name, -8) == '.out.css') continue;
             
@@ -81,7 +84,7 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
             ),
             'cleaner' => array(
                 array('vendor-hack', 'mistakes'),
-                array('none')
+                array()
             ),
             'borderer' => array(
                 array('border-radius'),
