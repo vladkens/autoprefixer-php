@@ -14,6 +14,15 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(static::$tests[$name][0], static::$tests[$name][1]);
     }
     
+    /**
+     * @beforeClass
+     */
+    public static function updateAutoprefixer()
+    {
+        $autoprefixer = new Autoprefixer();
+        $autoprefixer->update();
+    }
+    
     public function provider()
     {
         $this->settings = $this->getSettings();
