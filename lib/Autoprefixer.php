@@ -38,7 +38,8 @@ class Autoprefixer
     /**
      * @param   mixed   $css
      * @param   mixed   $browsers
-     * @throw   AutoprefixerException
+     * @throws  RuntimeException        If node runtime unavailable
+     * @throws  AutoprefixerException
      * @return  array
      */
     public function compile($css, $browsers = null)
@@ -51,19 +52,20 @@ class Autoprefixer
             array(array('pipe', 'r'), array('pipe', 'w')),
             $pipes
         );
-            
-        if ($nodejs) {
-            $this->fwrite_stream($pipes[0],
-                json_encode(array(
-                    'css' => $css,
-                    'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
-                ));
-            fclose($pipes[0]);
-            
-            $output = stream_get_contents($pipes[1]);
-            $output = json_decode($output, true);
-            fclose($pipes[1]);
+        if ($nodejs === false) {
+            throw new RuntimeException('Could not reach node runtime');
         }
+
+        $this->fwrite_stream($pipes[0],
+            json_encode(array(
+                'css' => $css,
+                'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
+            ));
+        fclose($pipes[0]);
+
+        $output = stream_get_contents($pipes[1]);
+        $output = json_decode($output, true);
+        fclose($pipes[1]);
         
         proc_close($nodejs);
         
