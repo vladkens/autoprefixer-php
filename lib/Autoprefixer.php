@@ -48,7 +48,7 @@ class Autoprefixer
             $css = array($css);
         }
         
-        $nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
+        $nodejs = proc_open('node ' . escapeshellarg( __DIR__ . '/vendor/wrap.js' ),
             array(array('pipe', 'r'), array('pipe', 'w')),
             $pipes
         );
