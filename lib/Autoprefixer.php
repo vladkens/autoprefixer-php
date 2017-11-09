@@ -11,15 +11,21 @@ class Autoprefixer
      * @var array
      */
     private $browsers = array();
-    
     /**
-     * @param   mixed   $browsers
+     * @var bool
      */
-    public function __construct($browsers = null)
+    private $sourceMap;
+
+    /**
+     * @param   mixed $browsers
+     * @param bool $sourceMap
+     */
+    public function __construct($browsers = null, $sourceMap = false)
     {
         if (!is_null($browsers)) {
             $this->setBrowsers($browsers);
         }
+        $this->sourceMap = $sourceMap;
     }
     
     /**
@@ -36,13 +42,13 @@ class Autoprefixer
     }
 
     /**
-     * @param   mixed   $css
-     * @param   mixed   $browsers
-     * @throws  RuntimeException        If node runtime unavailable
-     * @throws  AutoprefixerException
-     * @return  array
+     * @param   mixed $css
+     * @param   mixed $browsers
+     * @param null $sourceMap
+     * @return array If node runtime unavailable
+     * @throws AutoprefixerException
      */
-    public function compile($css, $browsers = null)
+    public function compile($css, $browsers = null, $sourceMap = null)
     {
         if ($return_string = !is_array($css)) {
             $css = array($css);
@@ -59,7 +65,10 @@ class Autoprefixer
         $this->fwrite_stream($pipes[0],
             json_encode(array(
                 'css' => $css,
-                'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
+                'options' => array(
+                    'browsers' => !is_null($browsers) ? $browsers : $this->browsers),
+                    'map'      => $this->sourceMap
+                )
             ));
         fclose($pipes[0]);
 
