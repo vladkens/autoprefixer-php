@@ -67,7 +67,7 @@ class Autoprefixer
                 'css' => $css,
                 'options' => array(
                     'browsers' => !is_null($browsers) ? $browsers : $this->browsers),
-                    'map'      => $this->sourceMap
+                    'map'      => $sourceMap === null ? $this->sourceMap : $sourceMap
                 )
             ));
         fclose($pipes[0]);
