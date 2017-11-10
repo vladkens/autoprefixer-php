@@ -11,15 +11,21 @@ class Autoprefixer
      * @var array
      */
     private $browsers = array();
-    
     /**
-     * @param   mixed   $browsers
+     * @var bool
      */
-    public function __construct($browsers = null)
+    private $sourceMap;
+
+    /**
+     * @param   mixed $browsers
+     * @param bool $sourceMap
+     */
+    public function __construct($browsers = null, $sourceMap = false)
     {
         if (!is_null($browsers)) {
             $this->setBrowsers($browsers);
         }
+        $this->sourceMap = $sourceMap;
     }
     
     /**
@@ -36,19 +42,19 @@ class Autoprefixer
     }
 
     /**
-     * @param   mixed   $css
-     * @param   mixed   $browsers
-     * @throws  RuntimeException        If node runtime unavailable
-     * @throws  AutoprefixerException
-     * @return  array
+     * @param   mixed $css
+     * @param   mixed $browsers
+     * @param null $sourceMap
+     * @return array If node runtime unavailable
+     * @throws AutoprefixerException
      */
-    public function compile($css, $browsers = null)
+    public function compile($css, $browsers = null, $sourceMap = null)
     {
         if ($return_string = !is_array($css)) {
             $css = array($css);
         }
         
-        $nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
+        $nodejs = proc_open('node ' . __DIR__ . '/wrapper/wrapper.js',
             array(array('pipe', 'r'), array('pipe', 'w')),
             $pipes
         );
@@ -59,7 +65,10 @@ class Autoprefixer
         $this->fwrite_stream($pipes[0],
             json_encode(array(
                 'css' => $css,
-                'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
+                'options' => array(
+                    'browsers' => !is_null($browsers) ? $browsers : $this->browsers),
+                    'map'      => $sourceMap === null ? $this->sourceMap : $sourceMap
+                )
             ));
         fclose($pipes[0]);
 
@@ -71,9 +80,8 @@ class Autoprefixer
         
         $error_messages = '';
         foreach ($output as $key => &$value) {
-            if (preg_match('/^Error:\s*/i', $value)) {
-                $value = preg_replace('/^Error:\s*/i', '', $value);
-                $error_messages .= "In css[$key]: $value \n";
+            if ($value['error'] !== false) {
+                $error_messages .= "In css[$key]: {$value['error']} \n";
             }
         }
         
@@ -81,30 +89,38 @@ class Autoprefixer
             throw new AutoprefixerException($error_messages);
         }
         
-        return $return_string ? $output[0] : $output;
+        return $return_string ? $output[0]['css'] : array_map(function($r) {return $r['css'];}, $output);
     }
-    
+
     /**
      * Download autoprefixer updates.
-     * @return  bool    True if updated.
+     * @return bool True if updated.
+     * @throws AutoprefixerException
      */
     public function update()
     {
-        $update_url = 'https://raw.github.com/ai/autoprefixer-rails/master/vendor/autoprefixer.js';
-        $local_path = __DIR__ . '/vendor/autoprefixer.js';
-        $new = file_get_contents($update_url);
-        $old = file_get_contents($local_path);
-        
-        if (md5($new) == md5($old)) return false;
-        
-        file_put_contents($local_path, $new);
-        return true;
+        $currentVersion = $this->getAutoprefixerVersion();
+        $cwd = getcwd();
+        chdir(__DIR__.'/wrapper');
+        $output = [];
+        $result = 0;
+        exec('npm -q update 2>&1', $output, $result);
+        chdir($cwd);
+        if($result) {
+            throw new AutoprefixerException("Error running npm update: returned $result\n".implode("\n", $output));
+        }
+        return $this->getAutoprefixerVersion() != $currentVersion;
+    }
+
+    public function getAutoprefixerVersion() {
+        $package = json_decode(file_get_contents(__DIR__ . '/wrapper/node_modules/autoprefixer/package.json'), true);
+        return $package['version'];
     }
     
     /**
-     * @param   object  $fp         php://stdin
-     * @param   string  $string
-     * @param   int     $buflen
+     * @param   resource  $fp         php://stdin
+     * @param   string    $string
+     * @param   int       $buflen
      * @return  string
      */
     private function fwrite_stream($fp, $string, $buflen = 4096)
