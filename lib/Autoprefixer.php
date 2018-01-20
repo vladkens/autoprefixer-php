@@ -56,11 +56,22 @@ class Autoprefixer
             throw new RuntimeException('Could not reach node runtime');
         }
 
-        $this->fwrite_stream($pipes[0],
-            json_encode(array(
-                'css' => $css,
-                'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
-            ));
+        $data_string = json_encode(array(
+            'css' => $css,
+            'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
+        );
+
+        if($data_string === false || $data_string === null) {
+            $error_message = 'Failed to json_encode: ';
+            if (function_exists('json_last_error_msg')) {
+                $error_message .= json_last_error_msg();
+            } else {
+                $error_message .= json_last_error();
+            }
+            throw new AutoprefixerException($error_message);
+        }
+
+        $this->fwrite_stream($pipes[0], $data_string);
         fclose($pipes[0]);
 
         $output = stream_get_contents($pipes[1]);
