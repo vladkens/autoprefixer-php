@@ -72,7 +72,13 @@ class AutoprefixerTest extends PHPUnit_Framework_TestCase
             }
         }
         
-        $input  = $this->clear($this->autoprefixer->compile($input, $browsers));
+        try {
+            $input = $this->autoprefixer->compile($input, $browsers);
+        } catch (AutoprefixerException $e) {
+            $output = $input;
+        }
+        
+        $input  = $this->clear($input);
         $output = $this->clear($output);
         
         static::$tests[$name] = array($input, $output);

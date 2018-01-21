@@ -48,14 +48,6 @@ class Autoprefixer
             $css = array($css);
         }
         
-        $nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
-            array(array('pipe', 'r'), array('pipe', 'w')),
-            $pipes
-        );
-        if ($nodejs === false) {
-            throw new RuntimeException('Could not reach node runtime');
-        }
-
         $data_string = json_encode(array(
             'css' => $css,
             'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
@@ -69,6 +61,14 @@ class Autoprefixer
                 $error_message .= json_last_error();
             }
             throw new AutoprefixerException($error_message);
+        }
+
+        $nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
+            array(array('pipe', 'r'), array('pipe', 'w')),
+            $pipes
+        );
+        if ($nodejs === false) {
+            throw new RuntimeException('Could not reach node runtime');
         }
 
         $this->fwrite_stream($pipes[0], $data_string);
