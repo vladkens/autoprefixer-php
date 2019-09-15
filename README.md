@@ -1,4 +1,4 @@
-# Autoprefixer PHP [![Build Status](https://travis-ci.org/ulkoalex/autoprefixer-php.svg?branch=master)](https://travis-ci.org/vladkens/autoprefixer-php)
+# Autoprefixer PHP
 
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
 to parse CSS and add vendor prefixes to CSS rules using values
