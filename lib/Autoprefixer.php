@@ -64,7 +64,7 @@ class Autoprefixer
         }
 
         $nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
-            array(array('pipe', 'r'), array('pipe', 'w')),
+			array(array('pipe', 'r'), array('pipe', 'w'), array('file', '/tmp/autoprefixer.error.log', 'a')),
             $pipes
         );
         if ($nodejs === false) {
