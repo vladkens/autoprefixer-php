@@ -44,14 +44,16 @@ class Autoprefixer
 	 */
 	public function compile($css, $browsers = null)
 	{
-        if ($return_string = !is_array($css)) {
+		$return_string = !is_array($css);
+
+		if ($return_string) {
 			$css = array($css);
 		}
 
 		$data_string = json_encode(array(
 			'css'      => $css,
-            'browsers' => !is_null($browsers) ? $browsers : $this->browsers)
-        );
+			'browsers' => !is_null($browsers) ? $browsers : $this->browsers
+		));
 
 		if ($data_string === false || $data_string === null) {
 			$error_message = 'Failed to json_encode: ';
@@ -70,6 +72,10 @@ class Autoprefixer
 		if ($nodejs === false) {
 			throw new RuntimeException('Could not reach node runtime');
 		}
+
+		// Make stdin/stdout non-blocking
+		// stream_set_blocking($pipes[0], 0);
+		// stream_set_blocking($pipes[1], 0);
 
 		$written = $this->fwrite_stream($pipes[0], $data_string);
 		fclose($pipes[0]);
