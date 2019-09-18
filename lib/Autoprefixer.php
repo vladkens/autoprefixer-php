@@ -73,10 +73,6 @@ class Autoprefixer
 			throw new RuntimeException('Could not reach node runtime');
 		}
 
-		// Make stdin/stdout non-blocking
-		// stream_set_blocking($pipes[0], 0);
-		// stream_set_blocking($pipes[1], 0);
-
 		$written = $this->fwrite_stream($pipes[0], $data_string);
 		fclose($pipes[0]);
 
@@ -89,9 +85,6 @@ class Autoprefixer
 		proc_close($nodejs);
 
 		if (!$output) {
-			// $stat = proc_get_status($nodejs);
-			// ini_set( 'xdebug.overload_var_dump', 'off' );
-			// var_dump($output, $stat);exit;
 			throw new AutoprefixerException('Could not read output');
 		}
 		$output = json_decode($output, true);
