@@ -65,10 +65,18 @@ class Autoprefixer
 			throw new AutoprefixerException($error_message);
 		}
 
+        // by default, use OS temp dir
+        $error_log_file_path = defined('AF_LOG_PATH') ? AF_LOG_PATH : (sys_get_temp_dir() . '/autoprefixer.error.log');
+
+        if (!is_writable($error_log_file_path)){
+            throw new AutoprefixerException("Error log file $error_log_file_path isn't writable");
+        }
+
 		$nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
-			array(array('pipe', 'r'), array('pipe', 'w'), array('file', '/tmp/autoprefixer.error.log', 'a')),
+			array(array('pipe', 'r'), array('pipe', 'w'), array('file', $error_log_file_path, 'a')),
 			$pipes
 		);
+
 		if ($nodejs === false) {
 			throw new RuntimeException('Could not reach node runtime');
 		}

@@ -93,6 +93,11 @@ $autoprefixer->compile($css_one, 'last 1 version');
 $autoprefixer->update();
 ```
 
+## Configuration
+
+You can set the path to the Autoprefixer error log using the const `AF_LOG_PATH`. By default,
+the log will be written to the file located at `sys_get_temp_dir() . '/autoprefixer.error.log'`.
+
 ## Speed
 On my Intel i5-3210M 2.5GHz and HDD 5200 RPM GitHub styles compiled in 390 ms.
 
