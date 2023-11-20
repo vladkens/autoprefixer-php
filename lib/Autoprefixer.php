@@ -65,10 +65,21 @@ class Autoprefixer
 			throw new AutoprefixerException($error_message);
 		}
 
+		// by default, use OS temp dir
+		$error_log_dir = defined('AF_LOG_DIR') ? AF_LOG_DIR : sys_get_temp_dir();
+		$error_log_file = $error_log_dir . DIRECTORY_SEPARATOR . 'autoprefixer.error.log';
+		if (!file_exists($error_log_file)) {
+			@touch($error_log_file);
+		}
+		if (!is_writable($error_log_file)){
+			throw new AutoprefixerException("Error log file '$error_log_file' isn't writable");
+		}
+
 		$nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
-			array(array('pipe', 'r'), array('pipe', 'w'), array('file', '/tmp/autoprefixer.error.log', 'a')),
+			array(array('pipe', 'r'), array('pipe', 'w'), array('file', $error_log_file, 'a')),
 			$pipes
 		);
+
 		if ($nodejs === false) {
 			throw new RuntimeException('Could not reach node runtime');
 		}
