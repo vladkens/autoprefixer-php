@@ -95,8 +95,8 @@ $autoprefixer->update();
 
 ## Configuration
 
-You can set the path to the Autoprefixer error log using the const `AF_LOG_PATH`. By default,
-the log will be written to the file located at `sys_get_temp_dir() . '/autoprefixer.error.log'`.
+You can set the dir for the Autoprefixer error log using the const `AF_LOG_DIR`. By default,
+the log will be written in the `sys_get_temp_dir()`.
 
 The path to the Node.js can be set using the const `NODE_PATH` or the `node` will be used in the `proc_open`.
 
