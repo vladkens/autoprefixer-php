@@ -72,7 +72,7 @@ class Autoprefixer
             throw new AutoprefixerException("Error log file $error_log_file_path isn't writable");
         }
 
-		$nodejs = proc_open('node ' . __DIR__ . '/vendor/wrap.js',
+		$nodejs = proc_open((defined('NODE_PATH') ? NODE_PATH : 'node') . ' ' . __DIR__ . '/vendor/wrap.js',
 			array(array('pipe', 'r'), array('pipe', 'w'), array('file', $error_log_file_path, 'a')),
 			$pipes
 		);
