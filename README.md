@@ -1,4 +1,4 @@
-# Autoprefixer PHP [![Build Status](https://travis-ci.org/vladkens/autoprefixer-php.svg?branch=master)](https://travis-ci.org/vladkens/autoprefixer-php)
+# Autoprefixer PHP
 
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
 to parse CSS and add vendor prefixes to CSS rules using values
@@ -92,6 +92,13 @@ $autoprefixer->compile($css_one, 'last 1 version');
 // Also, you can get latest version Autoprefixer using
 $autoprefixer->update();
 ```
+
+## Configuration
+
+You can set the dir for the Autoprefixer error log using the const `AF_LOG_DIR`. By default,
+the log will be written in the `sys_get_temp_dir()`.
+
+The path to the Node.js can be set using the const `NODE_PATH` or the `node` will be used in the `proc_open`.
 
 ## Speed
 On my Intel i5-3210M 2.5GHz and HDD 5200 RPM GitHub styles compiled in 390 ms.
